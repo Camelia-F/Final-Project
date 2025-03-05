@@ -1,9 +1,8 @@
 package com.example;
-
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
@@ -54,22 +53,33 @@ public class TC6_FilterSortCheck {
     driver.findElement(By.id("sortBy_id2")).click();
 
     List<WebElement> priceElements = driver.findElements(By.cssSelector("[data-test ='product-leaf-price']"));
+    List<WebElement> priceElements2 = driver.findElements(By.cssSelector("[data-test ='product-leaf-discounted-price']"));
+   
+    List<WebElement> allPriceElements = new ArrayList<>();
+    allPriceElements.addAll(priceElements);
+    allPriceElements.addAll(priceElements2);
+
     List<String> priceStrings = new ArrayList<>();
     List<Double> prices = new ArrayList<>();
 
-    for (WebElement priceElement : priceElements) {
-        String priceText = priceElement.getText().replaceAll("[^0-9,.]", "").replace(",", ".");
-        priceStrings.add(priceText); 
-        prices.add(Double.valueOf(priceText)); 
-    }
+    for (WebElement priceElement : allPriceElements) {
+    String priceText = priceElement.getText().replaceAll("[^0-9,.]", "").replace(",", ".");
+    double price = Double.parseDouble(priceText);
 
+    if (price <= 100) { 
+        priceStrings.add(priceText);
+        prices.add(price);
+    }
+  }
+    Collections.sort(prices); 
+   
     boolean isSorted = true;
     for (int i = 0; i < prices.size() - 1; i++) {
-        if (prices.get(i) > prices.get(i + 1)) {
-            isSorted = false;
-            break;
-        }
+    if (prices.get(i) > prices.get(i + 1)) {
+        isSorted = false;
+        break;
     }
+}
 
     if (isSorted) {
         System.out.println("Produsele sunt sortate corect!");
@@ -78,7 +88,6 @@ public class TC6_FilterSortCheck {
     }
 
     System.out.println("Prețurile extrase: " + priceStrings);
-
 } 
   
     @After
@@ -87,5 +96,6 @@ public class TC6_FilterSortCheck {
     } 
     }
   
+
 
 

@@ -59,8 +59,8 @@ public class TC6_FilterSortCheck {
 
     for (WebElement priceElement : priceElements) {
         String priceText = priceElement.getText().replaceAll("[^0-9,.]", "").replace(",", ".");
-        priceStrings.add(priceText); // Stocăm ca String
-        prices.add(Double.valueOf(priceText)); // Convertim la Double
+        priceStrings.add(priceText); 
+        prices.add(Double.valueOf(priceText)); 
     }
 
     boolean isSorted = true;
